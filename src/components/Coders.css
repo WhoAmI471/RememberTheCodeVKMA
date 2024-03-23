@@ -1,0 +1,254 @@
+.block{
+    font-size: 20pt;
+    text-align: center;
+    padding-bottom: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #0098B9;
+    color: #0AA5C7;
+    border-radius: 5px;
+
+    width: 8vmin;
+    height: 8vmin;
+
+    -webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+    font-weight: 700;
+}
+.famel-time{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+  
+}
+.timer{
+    margin-top: 20px;
+    font-weight: 500;
+    font-size: 28pt;
+    margin-bottom: 20px;
+}
+.game{
+    display: flex;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 20px;
+}
+
+
+.yes {
+
+    color: #26C000;
+}
+
+.no {
+    color: #DC2626;
+}
+
+
+
+/* ИНПУТ --------------------------------------*/
+.famel-input{
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.input-game{ 
+    width: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 50px;
+     
+}
+.vkuiInput__el{
+    font-size: 18pt;
+    font-weight: 400;
+    
+}
+.char-count{
+    margin-top: 5px;
+    margin-left: 22px;
+    color: #818C99;
+    font-size: 12pt;
+    font-weight: 400;
+}
+/* ------------------------------------------ */
+
+.vkuiButton__content{
+    padding-bottom: 3px;
+}
+.text-zap{
+    font-size: 15pt;
+    font-weight: 500;
+    margin-left: 20px;
+    margin-bottom: 7px;
+    height: 32px;
+   
+}
+.famel-btn{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+}
+.btn-sn-container {
+    display: flex;
+    flex-direction: column;
+}
+.btn-sn {
+    margin-top: 22px;
+    height: 50px;
+    width: 270px;
+    
+    background-color: #0AA5C7;
+    outline:none;
+    border: none;
+
+    color: #FFFF;
+    font-size: 16pt;
+    font-weight: 500;
+
+}
+.btn-sn1 {
+    margin-top: 12px;
+    height: 50px;
+    width: 270px;
+    
+    outline:none;
+    border: none;
+    color: #accdee;
+    font-size: 16pt;
+    font-weight: 500;
+
+}
+.btn-snt {
+    height: 50px;
+    width: 270px;
+    
+    background-color: #0098B9;
+    outline:none;
+    border: none;
+
+    color: #FFFF;
+    font-size: 16pt;
+    font-weight: 500;
+    margin-top: 92px;
+}
+
+.text-z{
+    font-size: 18pt;
+    font-weight: 500;   
+}
+
+
+.vkuiButton__content{
+    color: #FFFF;
+    font-size: 18pt;
+    font-weight: 500;
+}
+.vkuiButton--mode-primary.vkuiButton--appearance-accent{
+    background-color: #0098B9;
+    border: 10px;
+}
+.vkuiButton--mode-primary.vkuiButton--appearance-accent.vkuiButton--hover{
+    background-color: #03abd1;
+}
+.line{
+    height: 2px;
+    background-color: #0098B9;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 40px;
+}
+
+.vkuiButton--sizeY-none.vkuiButton--size-s .vkuiButton__content {
+    font-size: 18px;
+}
+
+.start-game{
+    margin-top: 45px;
+    height: 50px;
+    width: 270px;
+    
+    background-color: #0098B9;
+    outline:none;
+    border: none;
+
+    color: #FFFF;
+    font-size: 16pt;
+    font-weight: 500;
+}
+.start{
+    margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.line-s{
+    height: 1px;
+    background-color: #0098B9;
+}
+
+.vkuiButton--mode-outline[disabled]:not(.vkuiButton--appearance-overlay), 
+.vkuiButton--mode-primary[disabled]:not(.vkuiButton--appearance-overlay):not(.vkuiButton--appearance-negative):not(.vkuiButton--appearance-positive), 
+.vkuiButton--mode-secondary[disabled]:not(.vkuiButton--appearance-overlay), 
+.vkuiButton--mode-tertiary[disabled]:not(.vkuiButton--appearance-overlay) {
+    opacity: 0.45;
+}
+
+.name-app{
+    font-size: 28pt;
+    font-weight: 500;
+    margin-bottom: 20px;
+
+}
+
+.gude {
+  
+    color: black;
+    margin-top: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    font-size: 12pt;
+    font-weight: 500;
+
+    border: 1px solid #0AA5C7;
+    border-radius: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+    height: 100px;
+    width: 240px;
+    background-color: #f1f1f1;
+   }
+   .gude::before, .gude::after {
+    content: ''; 
+    position: absolute;
+    left: 200px; bottom: -20px;
+    border: 10px solid transparent;
+    border-top: 10px solid #0AA5C7;
+    
+   }
+   .gude::after {
+    border-top: 10px solid #f1f1f1 ;
+    bottom: -19px; 
+   }
+
+.trngl{
+    border: 20px solid transparent; 
+    border-top: 20px solid  #f1f1f1;
+}
