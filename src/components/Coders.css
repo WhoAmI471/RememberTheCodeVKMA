@@ -1,3 +1,4 @@
+
 .block{
     font-size: 20pt;
     text-align: center;
@@ -9,8 +10,10 @@
     color: #0AA5C7;
     border-radius: 5px;
 
-    width: 8vmin;
-    height: 8vmin;
+    margin: 3px;
+
+    width: 10vmin;
+    height: 10vmin;
 
     -webkit-user-select: none;
 	-khtml-user-select: none;
@@ -22,13 +25,18 @@
 }
 .famel-time{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 20px;
   
 }
+.round{
+    font-size: 14pt;
+    margin-left: 10px;
+    font-weight: 450;
+}
 .timer{
-    margin-top: 20px;
     font-weight: 500;
     font-size: 28pt;
     margin-bottom: 20px;
@@ -37,10 +45,10 @@
     display: flex;
     flex-direction: row;
     display: flex;
-    justify-content: space-between;
+    
 
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 17px;
+    margin-right: 17px;
     border-radius: 20px;
 }
 
@@ -116,8 +124,6 @@
     border: none;
 
     color: #FFFF;
-    font-size: 16pt;
-    font-weight: 500;
 
 }
 .btn-sn1 {
@@ -128,8 +134,6 @@
     outline:none;
     border: none;
     color: #accdee;
-    font-size: 16pt;
-    font-weight: 500;
 
 }
 .btn-snt {
@@ -141,8 +145,6 @@
     border: none;
 
     color: #FFFF;
-    font-size: 16pt;
-    font-weight: 500;
     margin-top: 92px;
 }
 
@@ -154,8 +156,6 @@
 
 .vkuiButton__content{
     color: #FFFF;
-    font-size: 18pt;
-    font-weight: 500;
 }
 .vkuiButton--mode-primary.vkuiButton--appearance-accent{
     background-color: #0098B9;
@@ -172,9 +172,9 @@
     margin-bottom: 40px;
 }
 
-.vkuiButton--sizeY-none.vkuiButton--size-s .vkuiButton__content {
+/* .vkuiButton--sizeY-none.vkuiButton--size-s .vkuiButton__content {
     font-size: 18px;
-}
+} */
 
 .start-game{
     margin-top: 45px;
@@ -234,19 +234,19 @@
     height: 100px;
     width: 240px;
     background-color: #f1f1f1;
-   }
-   .gude::before, .gude::after {
+}
+.gude::before, .gude::after {
     content: ''; 
     position: absolute;
     left: 200px; bottom: -20px;
     border: 10px solid transparent;
     border-top: 10px solid #0AA5C7;
     
-   }
-   .gude::after {
+}
+.gude::after {
     border-top: 10px solid #f1f1f1 ;
     bottom: -19px; 
-   }
+}
 
 .trngl{
     border: 20px solid transparent; 

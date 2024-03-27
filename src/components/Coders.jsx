@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Coders.css'
-import { Panel, Input, Button, PanelHeader } from '@vkontakte/vkui';
+import { Panel, Input, Button, PanelHeader, SplitLayout, ModalRoot, ModalPage, ModalCard, Spacing } from '@vkontakte/vkui';
 import logo from '../assets/logo.svg';
 
-const Coders = ({ setBunnerActive, countGames, setCountGames, ShareWithFriends }) => {
+const Coders = ({ setBunnerActive, setTryOneMore, setNewGame, ShareWithFriends, startGameAfterADS, setStartGameAfterADS, startGameAfterADSInterstitial, setStartGameAfterADSInterstitial, adBlockError, setAdBlockError }) => {
   const [blocks, setBlocks] = useState([]);
   const [currentNums, setCurrentNums] = useState(null);
   const [targetNumberToString, setTargetNumberToString] = useState('');
@@ -14,6 +14,141 @@ const Coders = ({ setBunnerActive, countGames, setCountGames, ShareWithFriends }
   const [timer, setTimer] = useState(5);
   const [isAnswered, setIsAnswered] = useState(false);
   const [isInputValid, setIsInputValid] = useState(false);
+
+  const [activeModal, setActiveModal] = useState('');
+
+  const [round,setRound] = useState(1)
+
+  const [numberSize, setNumberSize] = useState(5);
+  const [sizeInput, setSizeInput] = useState(5);
+
+  const modal = (
+    <ModalRoot activeModal={activeModal}> 
+      <ModalCard
+        id={'GameOver'}
+        // onClose={() => setActiveModal(null)}
+        header="Вы проиграли"
+        subheader="Можете продолжить, посмотрев короткий рекламный ролик, или начать заново."
+        dismissButtonMode='none'
+        actions={
+          <React.Fragment>
+            <Spacing size={16} />
+            <Button
+              size="l"
+              mode="primary"
+              stretched
+              onClick={
+                () => {
+                  setTryOneMore(true);
+                }
+              } 
+            >
+              Попробовать снова 
+            </Button>
+            <Spacing size={16} />
+            <Button
+              size="l"
+              mode="secondary" 
+              stretched
+              onClick={
+                () => {
+                  setNewGame(true);
+                }
+              }
+            >
+              <span style={{color:'#0AA5C7'}}>Начать заново</span>
+            </Button>
+            
+          </React.Fragment>
+        }
+      />
+      
+      <ModalCard
+        id={'EndGame'}
+        header="Вы победили!"
+        subheader="Продолжайте тренировать свою память, приглашайте друзей и соревнуйтесь!"
+        dismissButtonMode='none'
+        actions={
+          <React.Fragment>
+            <Spacing size={16} />
+            <Button
+              size="l"
+              mode="primary" 
+              stretched
+              onClick={
+                () => {
+                  setNewGame(true);
+                }
+              } 
+            >
+              Сыграть ещё раз
+            </Button>
+            <Spacing size={16} />
+            <Button 
+              size="l"
+              appearance="accent" 
+              mode="secondary" 
+              stretched
+              onClick={ShareWithFriends}
+            >
+              <span style={{color:'#0AA5C7'}}>Поделиться с друзьями</span>
+            </Button>
+          </React.Fragment>
+        }
+      />
+
+      <ModalCard
+        id={'AdsBlockModal'}
+        header="Не получилось загрузить рекламу"
+        subheader="Попробуйте отключить блокировщик рекламы и VPN, а также перезпгрузите страницу, или начните игру заново."
+        dismissButtonMode='none'
+        actions={
+          <React.Fragment>
+            <Spacing size={16} />
+            <Button
+              size="l"
+              mode="primary"
+              stretched
+              onClick={
+                () => {
+                  setActiveModal('GameOver');
+                  setAdBlockError(false);
+                }
+              } 
+            >
+              Хорошо
+            </Button>
+          </React.Fragment>
+        }
+      />
+
+    </ModalRoot>
+  );
+
+  useEffect(() => {
+    if(round === 6 && isCorrect) {
+      setActiveModal('EndGame');
+    }
+  }, [round, isCorrect])
+
+  useEffect(() => {
+    if (adBlockError) {
+      setActiveModal('AdsBlockModal');
+    }
+  }, [adBlockError])
+
+  useEffect(() => {
+    if(startGameAfterADS) {
+      startNextLevel(); 
+      setRound(round);
+      setStartGameAfterADS(false);
+    }
+    if(startGameAfterADSInterstitial) {
+      startNewGame(); 
+      setRound(1);
+      setStartGameAfterADSInterstitial(false);
+    }
+  }, [startGameAfterADS, startGameAfterADSInterstitial])
 
   useEffect(() => {
     let intervalId;
@@ -43,21 +178,40 @@ const Coders = ({ setBunnerActive, countGames, setCountGames, ShareWithFriends }
     return `${randomNum}`;
   }
 
-  const startNewGame = () => {
-    setCurrentNums(null)
-    const newBlocks = Array.from({ length: 8 }, () => GetRandomNum());
+  const InitTheGame = (size) => {
+    const newBlocks = Array.from({ length: size }, () => GetRandomNum());
+
     setBlocks(newBlocks);
+    setActiveModal(null)
+
+    setCurrentNums(null)
+    setUserInput('');
     setTargetNumberToString(newBlocks.join(''));
     setIsCorrect(null);
-    setUserInput('');
     setIsInputDisabled(true);
     setIsGameStarted(true);
     setTimer(5);
     setIsAnswered(false);
+  }
+
+  const startNewGame = () => {
+    setNumberSize(5); 
+    setSizeInput(5); 
+    InitTheGame(5);
     
     // Спустя 5 секунд цифры в блоках исчезнут
     setTimeout(() => {
-      setBlocks(Array.from({ length: 8 }, () => ''));
+      setBlocks(Array.from({ length: 5 }, () => ''));
+      setIsInputDisabled(false);
+    }, 5000);
+  };
+
+  const startNextLevel = () => {
+    InitTheGame(numberSize);
+    setRound(round+1)
+    // Спустя 5 секунд цифры в блоках исчезнут
+    setTimeout(() => {
+      setBlocks(Array.from({ length: numberSize }, () => ''));
       setIsInputDisabled(false);
     }, 5000);
   };
@@ -67,24 +221,27 @@ const Coders = ({ setBunnerActive, countGames, setCountGames, ShareWithFriends }
       checkAnswer();
     }
   };
+
   const handleInputChange = (e) => {
     let value = e.target.value.replace(/\D/g, ''); // Оставляем только цифры
-    value = value.slice(0, 8); // Ограничиваем длину до 8 символов
+    value = value.slice(0, numberSize); // Ограничиваем длину до 8 символов
     setUserInput(value);
     
-    if (value.length === 8) {
+    if (value.length === numberSize) {
         setIsInputValid(true);
     } else {
         setIsInputValid(false);
     }
-};
+  };
+
 
   const checkAnswer = () => {
     setIsInputDisabled(true);
     let answer = '';
     if (userInput === targetNumberToString) {
       setIsCorrect(true);
-      
+      setNumberSize(numberSize + 1)
+
       for (let index = 0; index < userInput.length; index++) {
         const element = userInput[index];
 
@@ -99,6 +256,9 @@ const Coders = ({ setBunnerActive, countGames, setCountGames, ShareWithFriends }
       }
     } else {
       setIsCorrect(false);
+      setActiveModal('GameOver');
+      
+      // setActiveModal('AdBlock');
       for (let index = 0; index < userInput.length; index++) {
         const element = userInput[index];
 
@@ -115,18 +275,18 @@ const Coders = ({ setBunnerActive, countGames, setCountGames, ShareWithFriends }
     setBlocks(targetNumberToString.split(''));
     setCurrentNums(answer.split(' '));
     setIsAnswered(true);
-    setCountGames(countGames + 1);
-
   };
 
   const isValid = userInput.trim() != '' ;
 
   return (
-    <> 
+    <SplitLayout modal={modal}> 
       {isGameStarted ? (
         <Panel>
+           
           <div className='famel-time'>
-            <div className='timer'>⌛ {timer} </div>
+            <div className='round'>Раунд: {round}</div>
+            <div className='timer'> ⌛ {timer} </div>
           </div>
 
           <div className='line'></div>
@@ -149,7 +309,7 @@ const Coders = ({ setBunnerActive, countGames, setCountGames, ShareWithFriends }
               disabled={isInputDisabled} 
             />
           </div>                
-         <div className='char-count'>{userInput.length}/8</div>
+         <div className='char-count'>{userInput.length}/{sizeInput}</div>
           {!isAnswered && (
             <div className='famel-btn'>
               <Button className='btn-snt' onClick={checkAnswer} disabled={!isInputValid || isInputDisabled || !isValid}>Проверить ответ</Button>
@@ -161,8 +321,26 @@ const Coders = ({ setBunnerActive, countGames, setCountGames, ShareWithFriends }
                 {isCorrect ? 'Верно!' : 'Неверно!'}
               </div>
               <div className='btn-sn-container'>
-                <Button className='btn-sn' onClick={startNewGame}>Играть снова</Button>
-                <Button appearance="accent" mode="secondary" className='btn-sn1' onClick={ShareWithFriends}><span style={{color:'#0AA5C7'}}>Поделиться с друзьями</span></Button>
+                <Button 
+                  className='btn-sn' 
+                  onClick={
+                    () => {
+                      startNextLevel(); 
+                      setSizeInput(sizeInput + 1);
+                    }
+                  }
+                >
+                  Продолжить
+                </Button>
+                
+                <Button 
+                  appearance="accent" 
+                  mode="secondary" 
+                  className='btn-sn1' 
+                  onClick={ShareWithFriends}
+                >
+                  <span style={{color:'#0AA5C7'}}>Поделиться с друзьями</span>
+                </Button>
               </div>
             </div>
           )}
@@ -179,7 +357,7 @@ const Coders = ({ setBunnerActive, countGames, setCountGames, ShareWithFriends }
           </div> 
         </Panel>
       )}
-    </>
+    </SplitLayout>
   );
 };
 

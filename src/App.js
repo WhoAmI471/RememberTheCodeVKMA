@@ -13,7 +13,11 @@ export const App = () => {
   const [popout, setPopout] = useState(<ScreenSpinner size="large" />);
 
   const [bunnerActive, setBunnerActive] = useState(false);
-  const [countGames, setCountGames] = useState(0);
+  const [tryOneMore, setTryOneMore] = useState(false);
+  const [startGameAfterADS, setStartGameAfterADS] = useState(false);
+  const [startGameAfterADSInterstitial, setStartGameAfterADSInterstitial] = useState(false);
+  const [newGame, setNewGame] = useState(false);
+  const [adBlockError, setAdBlockError] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -62,7 +66,7 @@ export const App = () => {
 
   async function ShareWithFriends () {
     bridge.send('VKWebAppShowWallPostBox', {
-      message: 'Заходи и прокачивай свою память :-)',
+      message: 'Заходи и прокачивай свою память!',
       attachments: 'https://vk.com/app51876996'
       })
       .then((data) => { 
@@ -78,26 +82,47 @@ export const App = () => {
   };
 
   useEffect(() => {
-    async function ShowNativeAds() {
+    async function ShowNativeAdsReward() {
+      bridge.send('VKWebAppShowNativeAds', {
+        ad_format: 'reward' /* Тип рекламы */
+        })
+        .then( (data) => { 
+          if (data.result) {
+            setStartGameAfterADS(true);
+          } else {
+            // Ошибка
+          }
+        })
+        .catch((error) => { console.log(error); setAdBlockError(true);});
+    }
+
+    async function ShowNativeAdsInterstitial() {
       bridge.send('VKWebAppShowNativeAds', {
         ad_format: 'interstitial' /* Тип рекламы */
         })
         .then( (data) => { 
           if (data.result) {
-            // Реклама была показана
+            setStartGameAfterADSInterstitial(true);
           } else {
             // Ошибка
           }
         })
-        .catch((error) => { console.log(error); });
+        .catch((error) => { 
+          console.log(error); 
+          setStartGameAfterADSInterstitial(true);
+        });
     }
 
-    // console.log(`countGames: ${countGames}`);
-    if (countGames === 3){
-      ShowNativeAds();
-      setCountGames(0);
+    if (tryOneMore){
+      ShowNativeAdsReward();
+      setTryOneMore(false);
     } 
-  }, [countGames])
+
+    if (newGame) {
+      ShowNativeAdsInterstitial();
+      setNewGame(false);
+    }
+  }, [tryOneMore, newGame])
 
   return (
     <SplitLayout popout={popout}>
@@ -106,9 +131,15 @@ export const App = () => {
           <Coders 
             id="home" 
             setBunnerActive={setBunnerActive} 
-            countGames={countGames}
-            setCountGames={setCountGames} 
+            setTryOneMore={setTryOneMore} 
+            setNewGame={setNewGame} 
             ShareWithFriends={ShareWithFriends}
+            startGameAfterADS={startGameAfterADS}
+            setStartGameAfterADS={setStartGameAfterADS}
+            startGameAfterADSInterstitial={startGameAfterADSInterstitial}
+            setStartGameAfterADSInterstitial={setStartGameAfterADSInterstitial}
+            adBlockError={adBlockError}
+            setAdBlockError={setAdBlockError}
           />
         </View>
       </SplitCol>
